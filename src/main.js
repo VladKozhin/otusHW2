@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var SpaceShip_1 = require("./classes/SpaceShip");
+var MovableAdapter_1 = require("./adapters/MovableAdapter");
+var Vector_1 = require("./classes/Vector");
+var Move_1 = require("./classes/Move");
+var params = new Map();
+params.set("Location", new Vector_1.Vector(12, 5));
+params.set("Velocity", new Vector_1.Vector(-7, 3));
+params.set("Direction", 90);
+params.set("DirectionsNumber", 8);
+var ship = new MovableAdapter_1.MovableAdapter(new SpaceShip_1.SpaceShip(params));
+Move_1.Move.execute(ship);
+//ship.setLocation(new Vector(1, 4));
+console.log(ship.getLocation());
