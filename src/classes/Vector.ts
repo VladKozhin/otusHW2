@@ -5,7 +5,7 @@ export class Vector{
         this.x = x;
         this.y = y;
     }
-    static Addition(first: Vector, second: Vector): Vector {
-        return new Vector(first.x + second.x, first.y + second.y);
+    add(vector: Vector): Vector {
+        return new Vector(this.x + vector.x, this.y + vector.y);
     }
 }

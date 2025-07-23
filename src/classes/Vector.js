@@ -8,8 +8,8 @@ var Vector = /** @class */ (function () {
         this.x = x;
         this.y = y;
     }
-    Vector.Addition = function (first, second) {
-        return new Vector(first.x + second.x, first.y + second.y);
+    Vector.prototype.add = function (vector) {
+        return new Vector(this.x + vector.x, this.y + vector.y);
     };
     return Vector;
 }());

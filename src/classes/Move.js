@@ -1,13 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Move = void 0;
-const Vector_1 = require("./Vector");
-class Move {
-    Move(a) {
-        Move.a = a;
+var Move = /** @class */ (function () {
+    function Move(target) {
+        this.target = target;
     }
-    static execute(a) {
-        a.setLocation(Vector_1.Vector.Addition(a.getLocation(), a.getVelocity()));
-    }
-}
+    Move.prototype.Execute = function () {
+        var location = this.target.getLocation();
+        var velocity = this.target.getVelocity();
+        var newLocation = location.add(velocity);
+        this.target.setLocation(newLocation);
+    };
+    return Move;
+}());
 exports.Move = Move;

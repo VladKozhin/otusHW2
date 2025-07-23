@@ -1,13 +1,16 @@
 import {IRotatable} from "../interfaces/IRotatable";
-import {Vector} from "./Vector";
+import {IAbstractObject} from "../interfaces/IAbstractObject";
+export class Rotate {
+    private target: IRotatable;
 
-class Rotate {
-    r: IRotatable;
-    constructor(r: IRotatable) {
-        this.r = r;
+    constructor(target: IRotatable) {
+        this.target = target;
     }
 
-    public Execute():void{
-
+    public Execute() {
+        const currentAngle = this.target.getDirection();
+        const angularVelocity = this.target.getAngularVelocity();
+        const newAngle = currentAngle + angularVelocity;
+        this.target.setDirection(newAngle);
     }
 }

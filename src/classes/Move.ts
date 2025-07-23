@@ -1,16 +1,17 @@
 import {IMovable} from "../interfaces/IMovable";
+import {IAbstractObject} from "../interfaces/IAbstractObject";
 import {Vector} from "./Vector";
 export class Move {
-    private static a: IMovable;
-    public Move(a: IMovable):void{
-        Move.a = a;
+    private target: IMovable;
+
+    constructor(target: IMovable) {
+        this.target = target;
     }
-    public static execute(a){
-        a.setLocation(
-            Vector.Addition(
-                a.getLocation(),
-                a.getVelocity()
-            )
-        )
+
+    public Execute() {
+        const location = this.target.getLocation();
+        const velocity = this.target.getVelocity();
+        const newLocation = location.add(velocity);
+        this.target.setLocation(newLocation);
     }
 }

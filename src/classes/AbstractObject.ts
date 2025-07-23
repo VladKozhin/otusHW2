@@ -1,11 +1,9 @@
-import {MovableAdapter} from "../adapters/MovableAdapter";
 import {IAbstractObject} from "../interfaces/IAbstractObject";
-import {Move} from "./Move";
-export class SpaceShip extends Move implements IAbstractObject{
+
+export class AbstractObject implements IAbstractObject {
     params: Map<string, any>;
 
     constructor(params:Map<string, any>) {
-        super();
         this.params = params;
     }
 
