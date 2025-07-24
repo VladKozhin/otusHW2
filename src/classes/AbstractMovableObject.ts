@@ -6,17 +6,17 @@ import {AbstractObject} from "./AbstractObject";
 import {MoveComponent} from "../components/MoveComponent";
 import {RotateComponent} from "../components/RotateComponent";
 export class AbstractMovableObject implements IMovable, IRotatable{
-    private movementComponent: IMovable;
-    private rotationComponent: IRotatable;
-    private abstractObject: IAbstractObject;
+    public movementComponent: IMovable;
+    public rotationComponent: IRotatable;
+    public abstractObject: IAbstractObject;
 
     constructor(abstractObject:IAbstractObject) {
         const location = abstractObject.getField('Location') as Vector;
         const velocity = abstractObject.getField('Velocity') as Vector;
-        const rotation = abstractObject.getField('Rotation') as number;
-        const angularVelocity = abstractObject.getField('AngularVelocity') as number;
+        const rotation = abstractObject.getField('Direction') as number;
+        //const angularVelocity = abstractObject.getField('AngularVelocity') as number;
         this.movementComponent = new MoveComponent(location, velocity);
-        this.rotationComponent = new RotateComponent(rotation, angularVelocity);
+        this.rotationComponent = new RotateComponent(rotation);
         this.abstractObject = abstractObject;
     }
     // IMovable
@@ -36,8 +36,8 @@ export class AbstractMovableObject implements IMovable, IRotatable{
 
     // IRotatable
     getDirection(): number {
-        return this.rotationComponent.getDirection();
-        //return this.abstractObject.getField("Direction")
+        //return this.rotationComponent.getDirection();
+        return this.abstractObject.getField("Direction")
     }
 
     setDirection(angle: number): void {
@@ -45,17 +45,10 @@ export class AbstractMovableObject implements IMovable, IRotatable{
         this.abstractObject.setField("Direction", angle)
     }
 
-    getAngularVelocity(): number {
-        return this.rotationComponent.getAngularVelocity();
-        //return this.abstractObject.getField("AngularVelocity")
-    }
     getDirectionsNumber(): number {
         return this.rotationComponent.getDirectionsNumber();
         //return this.abstractObject.getField("DirectionsNumber")
     }
 
-    setAngularVelocity(angle: number): void {
-        this.rotationComponent.setAngularVelocity(angle);
-        this.abstractObject.setField("AngularVelocity", angle)
-    }
+
 }

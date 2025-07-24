@@ -7,10 +7,10 @@ var AbstractMovableObject = /** @class */ (function () {
     function AbstractMovableObject(abstractObject) {
         var location = abstractObject.getField('Location');
         var velocity = abstractObject.getField('Velocity');
-        var rotation = abstractObject.getField('Rotation');
-        var angularVelocity = abstractObject.getField('AngularVelocity');
+        var rotation = abstractObject.getField('Direction');
+        //const angularVelocity = abstractObject.getField('AngularVelocity') as number;
         this.movementComponent = new MoveComponent_1.MoveComponent(location, velocity);
-        this.rotationComponent = new RotateComponent_1.RotateComponent(rotation, angularVelocity);
+        this.rotationComponent = new RotateComponent_1.RotateComponent(rotation);
         this.abstractObject = abstractObject;
     }
     // IMovable
@@ -27,24 +27,16 @@ var AbstractMovableObject = /** @class */ (function () {
     };
     // IRotatable
     AbstractMovableObject.prototype.getDirection = function () {
-        return this.rotationComponent.getDirection();
-        //return this.abstractObject.getField("Direction")
+        //return this.rotationComponent.getDirection();
+        return this.abstractObject.getField("Direction");
     };
     AbstractMovableObject.prototype.setDirection = function (angle) {
         this.rotationComponent.setDirection(angle);
         this.abstractObject.setField("Direction", angle);
     };
-    AbstractMovableObject.prototype.getAngularVelocity = function () {
-        return this.rotationComponent.getAngularVelocity();
-        //return this.abstractObject.getField("AngularVelocity")
-    };
     AbstractMovableObject.prototype.getDirectionsNumber = function () {
         return this.rotationComponent.getDirectionsNumber();
         //return this.abstractObject.getField("DirectionsNumber")
-    };
-    AbstractMovableObject.prototype.setAngularVelocity = function (angle) {
-        this.rotationComponent.setAngularVelocity(angle);
-        this.abstractObject.setField("AngularVelocity", angle);
     };
     return AbstractMovableObject;
 }());

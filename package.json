@@ -2,9 +2,17 @@
   "name": "Otus2nd",
   "version": "1.0.0",
   "dependencies": {
-    "tcs": "^10.0.2"
+    "jest": "^30.0.5",
+    "tcs": "^10.0.2",
+    "ts-jest": "^29.4.0"
+  },
+  "scripts": {
+    "test": "jest"
   },
   "build": {
     "dev": "tsc main.ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0"
   }
 }
