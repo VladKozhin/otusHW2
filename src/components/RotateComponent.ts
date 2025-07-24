@@ -8,7 +8,6 @@ export class RotateComponent implements IRotatable {
     private location: Vector;
 
     constructor(direction: number) {
-        //this.rotation = rotation;
         this.direction = direction;
     }
 

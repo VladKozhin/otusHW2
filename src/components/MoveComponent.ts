@@ -1,6 +1,5 @@
 import {IMovable} from "../interfaces/IMovable";
 import {Vector} from "../classes/Vector";
-import {IAbstractObject} from "../interfaces/IAbstractObject";
 
 export class MoveComponent implements IMovable {
     private location: Vector;

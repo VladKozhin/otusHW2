@@ -6,6 +6,4 @@ export interface IRotatable {
 
     setDirection(angle: number);
     getDirection(): number;
-
-    getDirectionsNumber(): number;
 }

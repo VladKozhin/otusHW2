@@ -1,6 +1,4 @@
 import {IMovable} from "../interfaces/IMovable";
-import {IAbstractObject} from "../interfaces/IAbstractObject";
-import {Vector} from "./Vector";
 export class Move {
     private target: IMovable;
 
