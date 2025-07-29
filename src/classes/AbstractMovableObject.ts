@@ -4,6 +4,7 @@ import {IRotatable} from "../interfaces/IRotatable";
 import {Vector} from "./Vector";
 import {MoveComponent} from "../components/MoveComponent";
 import {RotateComponent} from "../components/RotateComponent";
+
 export class AbstractMovableObject implements IMovable, IRotatable{
     public movementComponent: IMovable;
     public rotationComponent: IRotatable;
