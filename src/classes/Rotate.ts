@@ -1,4 +1,5 @@
 import {IRotatable} from "../interfaces/IRotatable";
+import {Vector} from "./Vector";
 
 export class Rotate {
     private target: IRotatable;
@@ -8,11 +9,15 @@ export class Rotate {
     }
 
     public Execute() {
-        const a = this.target.getDirection();
-        const b = this.target.getAngularVelocity();
+        const vx = this.target.getLocation().x
+        const vy = this.target.getLocation().y
 
-        let result = (a +b ) % 360;
+        const cosTheta = Math.cos(this.target.getDirection());
+        const sinTheta = Math.sin(this.target.getDirection());
 
-        this.target.setDirection(result)
+        const newVx = Math.round(vx * cosTheta - vy * sinTheta);
+        const newVy = Math.round(vx * sinTheta + vy * cosTheta);
+
+        this.target.setLocation(new Vector(newVx, newVy))
     }
 }

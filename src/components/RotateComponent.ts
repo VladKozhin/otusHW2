@@ -2,26 +2,28 @@ import {IRotatable} from "../interfaces/IRotatable";
 import {Vector} from "../classes/Vector";
 
 export class RotateComponent implements IRotatable {
-    private direction: number; // угол
-    private angularVelocity: number; // скорость вращения
+    private rotation: number; // угол
+    private direction: number; // скорость вращения
     private directionsNumber: number;
+    private location: Vector;
 
     constructor(direction: number) {
         this.direction = direction;
     }
 
     getDirection(): number {
-        return this.direction;
+        return this.rotation;
     }
 
     setDirection(angle: number): void {
-        this.direction = angle;
+        this.rotation = angle;
     }
 
-    getAngularVelocity():number{
-        return this.angularVelocity;
+    getLocation(): Vector {
+        return this.location;
     }
-    getDirectionsNumber():number{
-        return this.directionsNumber;
+
+    setLocation(vector: Vector): void {
+        this.location = vector;
     }
 }
