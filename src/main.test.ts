@@ -18,20 +18,21 @@ it('Проверка корректности изменения координ�
     expect(obj.getLocation()).toEqual(new Vector(5, 8));
 });
 
-it('Поворот: при изменении угла поворота на 90 градусов при изначальных 300 текущий угол становится 30 градусов', () => {
+it('Движение с поворотом: после 4-х поворотов объект возвращается на исходную точку', () => {
     let params = new Map();
-    params.set("Location", new Vector(5,5));
-    params.set("Direction", 300);
-    params.set("Velocity", new Vector(0,0));
-    params.set("DirectionsNumber", 8);
-    params.set("AngularVelocity", 90);
+    const v: Vector = new Vector(5,5);
+    params.set("Location", v);
+    params.set("Direction", (90 * Math.PI) / 180); //поворачиваем на 90 градусов с постоянной скоростью
+    params.set("Velocity", v);
 
-    let spaceShip = new AbstractMovableObject(new AbstractObject(params));
-
-    const rotateExecutor = new Rotate(spaceShip);
+    const obj = new AbstractMovableObject(new AbstractObject(params));
+    const rotateExecutor = new Rotate(obj);
 
     rotateExecutor.Execute();
-    expect(spaceShip.getDirection()).toEqual(30);
+    rotateExecutor.Execute();
+    rotateExecutor.Execute();
+    rotateExecutor.Execute();
+    expect(obj.getLocation()).toEqual(v);
 });
 
 it('Отсутствуют координаты', () => {
