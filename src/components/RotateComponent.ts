@@ -19,10 +19,6 @@ export class RotateComponent implements IRotatable {
         this.rotation = angle;
     }
 
-    getDirectionsNumber(): number {
-        return this.directionsNumber;
-    }
-
     getLocation(): Vector {
         return this.location;
     }
