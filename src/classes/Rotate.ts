@@ -1,5 +1,6 @@
 import {IRotatable} from "../interfaces/IRotatable";
 import {Vector} from "./Vector";
+
 export class Rotate {
     private target: IRotatable;
 

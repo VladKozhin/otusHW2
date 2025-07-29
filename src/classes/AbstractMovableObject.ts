@@ -4,6 +4,7 @@ import {IRotatable} from "../interfaces/IRotatable";
 import {Vector} from "./Vector";
 import {MoveComponent} from "../components/MoveComponent";
 import {RotateComponent} from "../components/RotateComponent";
+
 export class AbstractMovableObject implements IMovable, IRotatable{
     public movementComponent: IMovable;
     public rotationComponent: IRotatable;
@@ -39,9 +40,5 @@ export class AbstractMovableObject implements IMovable, IRotatable{
     setDirection(angle: number): void {
         this.rotationComponent.setDirection(angle);
         this.abstractObject.setField("Direction", angle)
-    }
-
-    getDirectionsNumber(): number {
-        return this.rotationComponent.getDirectionsNumber();
     }
 }
