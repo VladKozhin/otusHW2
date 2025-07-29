@@ -1,4 +1,4 @@
-import {AbstractMovableObject} from "./classes/AbstractMovableObject";
+/*import {AbstractMovableObject} from "./classes/AbstractMovableObject";
 import {Vector} from "./classes/Vector";
 import {Move} from "./classes/Move";
 import {AbstractObject} from "./classes/AbstractObject";
@@ -21,3 +21,4 @@ setInterval(() => {
     rotateExecutor.Execute();
     console.log(spaceShip.getDirection())
 }, 1000);
+*/
