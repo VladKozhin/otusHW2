@@ -41,12 +41,4 @@ export class AbstractMovableObject implements IMovable, IRotatable{
         this.rotationComponent.setDirection(angle);
         this.abstractObject.setField("Direction", angle)
     }
-
-    getDirectionsNumber():number{
-        return this.abstractObject.getField("DirectionsNumber")
-    }
-
-    getAngularVelocity(): number {
-        return this.abstractObject.getField("AngularVelocity")
-    }
 }

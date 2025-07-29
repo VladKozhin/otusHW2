@@ -31,11 +31,5 @@ class AbstractMovableObject {
         this.rotationComponent.setDirection(angle);
         this.abstractObject.setField("Direction", angle);
     }
-    getDirectionsNumber() {
-        return this.abstractObject.getField("DirectionsNumber");
-    }
-    getAngularVelocity() {
-        return this.abstractObject.getField("AngularVelocity");
-    }
 }
 exports.AbstractMovableObject = AbstractMovableObject;
