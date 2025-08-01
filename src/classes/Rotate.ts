@@ -8,7 +8,7 @@ export class Rotate {
     }
 
     public Execute() {
-        const vx = this.target.getLocation().x
+       /* const vx = this.target.getLocation().x
         const vy = this.target.getLocation().y
 
         const cosTheta = Math.cos(this.target.getDirection());
@@ -17,6 +17,7 @@ export class Rotate {
         const newVx = Math.round(vx * cosTheta - vy * sinTheta);
         const newVy = Math.round(vx * sinTheta + vy * cosTheta);
 
-        this.target.setLocation(new Vector(newVx, newVy))
+        this.target.setLocation(new Vector(newVx, newVy))*/
+        return this.target.getDirection()
     }
 }
