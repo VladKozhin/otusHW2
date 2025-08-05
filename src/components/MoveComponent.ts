@@ -21,4 +21,8 @@ export class MoveComponent implements IMovable {
     getVelocity(): Vector {
         return this.velocity;
     }
+
+    setVelocity(velocity: Vector): void {
+        this.velocity = velocity;
+    }
 }

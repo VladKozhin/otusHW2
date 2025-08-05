@@ -1,20 +1,24 @@
-/*import {AbstractMovableObject} from "./classes/AbstractMovableObject";
-import {Vector} from "./classes/Vector";
-import {Move} from "./classes/Move";
-import {AbstractObject} from "./classes/AbstractObject";
-import {Rotate} from "./classes/Rotate";
-
-let params = new Map<string, any>();
-params.set("Location", new Vector(5,5));
-params.set("Direction", (90 * Math.PI) / 180);
-params.set("Velocity", new Vector(5,5));
-
-let spaceShip = new AbstractMovableObject(new AbstractObject(params));
-
-const moveExecutor = new Move(spaceShip);
-const rotateExecutor = new Rotate(spaceShip);
-setInterval(() => {
-    //moveExecutor.Execute();
-    rotateExecutor.Execute();
-    console.log(spaceShip.getLocation())
-}, 1000);*/
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var AbstractMovableObject_1 = require("./classes/AbstractMovableObject");
+var Vector_1 = require("./classes/Vector");
+var Move_1 = require("./classes/Move");
+var AbstractObject_1 = require("./classes/AbstractObject");
+var Rotate_1 = require("./classes/Rotate");
+var Queue_1 = require("./classes/Queue");
+var params = new Map();
+params.set("Location", new Vector_1.Vector(0, 0));
+params.set("Direction", 0);
+params.set("Velocity", new Vector_1.Vector(5, 0));
+params.set("FuelLevel", 100);
+var spaceShip = new AbstractMovableObject_1.AbstractMovableObject(new AbstractObject_1.AbstractObject(params));
+var moveExecutor = new Move_1.Move(spaceShip);
+var rotateExecutor = new Rotate_1.Rotate(spaceShip, 90);
+var queue = new Queue_1.Queue();
+var ChangeVelocityCommand = new Queue_1.Queue();
+ChangeVelocityCommand.enqueue(function () { return spaceShip.setVelocity(spaceShip.clarificateDirection()); });
+queue.enqueue(function () { rotateExecutor.Execute(); });
+queue.enqueue(function () { ChangeVelocityCommand.Execute(); });
+queue.enqueue(function () { moveExecutor.Execute(); });
+queue.Execute();
+console.log(spaceShip.getLocation());

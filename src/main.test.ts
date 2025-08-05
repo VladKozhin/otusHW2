@@ -3,54 +3,120 @@ import {AbstractObject} from "./classes/AbstractObject";
 import {AbstractMovableObject} from "./classes/AbstractMovableObject";
 import {Move} from "./classes/Move";
 import {Rotate} from "./classes/Rotate";
+import {BurnFuelCommand} from "./classes/BurnFuelCommand";
+import {CheckFuelCommand} from "./classes/CheckFuelCommand";
+import {Queue} from "./classes/Queue";
 
-it('Проверка корректности изменения координат при прямолинейном движении', () => {
-    let params = new Map();
-    params.set("Location", new Vector(12,5));
-    params.set("Velocity", new Vector(-7,3));
+it('CheckFuelCommand выбрасывает исключение, если запас топлива не указан', () => {
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(5,5));
+    params.set("Direction", (90 * Math.PI) / 180);
+    params.set("Velocity", new Vector(5,5));
+
+    expect(() => new CheckFuelCommand(new AbstractMovableObject(new AbstractObject(params))).Execute()).toThrow('Field FuelLevel cant be read!');
+});
+
+it('CheckFuelCommand выбрасывает исключение, если запас топлива равен 0', () => {
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(5,5));
+    params.set("Direction", (90 * Math.PI) / 180);
+    params.set("Velocity", new Vector(5,5));
+
+    params.set("FuelLevel", 0);
+    expect(() => new CheckFuelCommand(new AbstractMovableObject(new AbstractObject(params))).Execute()).toThrow('Current fuel level is too low!');
+});
+
+it('BurnFuelCommand выбрасывает исключение, если производится попытка сжечь топливо, если его значение не указано', () => {
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(5,5));
+    params.set("Direction", (90 * Math.PI) / 180);
+    params.set("Velocity", new Vector(5,5));
+
+    expect(() => new BurnFuelCommand(new AbstractMovableObject(new AbstractObject(params))).Execute()).toThrow('Field FuelLevel cant be read!');
+});
+
+it('BurnFuelCommand выбрасывает исключение, если производится попытка сжечь топливо, если его значение равно 0', () => {
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(5,5));
+    params.set("Direction", (90 * Math.PI) / 180);
+    params.set("Velocity", new Vector(5,5));
+
+    params.set("FuelLevel", 0);
+    expect(() => new BurnFuelCommand(new AbstractMovableObject(new AbstractObject(params))).Execute()).toThrow('Current fuel level is too low!');
+});
+
+it('BurnFuelCommand сжигает единицу топлива (5 -> 4)', () => {
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(5,5));
+    params.set("Direction", (90 * Math.PI) / 180);
+    params.set("Velocity", new Vector(5,5));
+
+    params.set("FuelLevel", 5);
+    const obj = new AbstractMovableObject(new AbstractObject(params))
+    new BurnFuelCommand(obj).Execute()
+
+    expect(new CheckFuelCommand(obj).Execute()).toEqual(4);
+});
+
+it('Макрокоманда: перемещение со сжиганием топлива', () => {
+    /*
+    * Ожидается, что объект переместится из точки (5, 5) в точку (10, 10) и затратит на это 1 единицу топлива из 100
+    * */
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(5,5));
+    params.set("Direction", (90 * Math.PI) / 180);
+    params.set("Velocity", new Vector(5,5));
+    params.set("FuelLevel", 100);
+
+    let spaceShip = new AbstractMovableObject(new AbstractObject(params));
+
+    const moveExecutor = new Move(spaceShip);
+    const fuelBurner = new BurnFuelCommand(spaceShip)
+    const fuelGetter = new CheckFuelCommand(spaceShip)
+    const queue = new Queue();
+
+    //макрокоманда
+    const straightMoveWithBurningFuel = new Queue();
+    straightMoveWithBurningFuel.enqueue(()=>{fuelGetter.Execute()});
+    straightMoveWithBurningFuel.enqueue(()=>{moveExecutor.Execute()});
+    straightMoveWithBurningFuel.enqueue(()=>{fuelBurner.Execute()});
+
+    queue.enqueue(()=>{straightMoveWithBurningFuel.Execute()})
+    queue.Execute()
+
+    expect(fuelGetter.Execute()).toEqual(99);
+    expect(spaceShip.getLocation()).toEqual(new Vector(10,10));
+});
+
+it('Макрокоманда: движение с перемещением и поворотом', () => {
+    /*
+    * Ожидается, что перед началом движения из центра координат происходит поворот на 90 градусов
+    * */
+    let params = new Map<string, any>();
+    params.set("Location", new Vector(0,0));
     params.set("Direction", 0);
+    params.set("Velocity", new Vector(5,0));
+    params.set("FuelLevel", 100);
 
-    const obj = new AbstractMovableObject(new AbstractObject(params));
-    const moveExecutor = new Move(obj);
+    let spaceShip = new AbstractMovableObject(new AbstractObject(params));
 
-    expect(obj.getLocation()).toEqual(new Vector(12, 5));
-    moveExecutor.Execute();
-    expect(obj.getLocation()).toEqual(new Vector(5, 8));
+    const moveExecutor = new Move(spaceShip);
+    const rotateExecutor = new Rotate(spaceShip, 90);
+    const queue = new Queue();
+
+    //макрокоманда из одной команды
+    const ChangeVelocityCommand = new Queue();
+    ChangeVelocityCommand.enqueue(() => spaceShip.setVelocity(spaceShip.clarificateDirection()))
+
+    //предварительный поворот
+    queue.enqueue(() => {rotateExecutor.Execute()})
+    //поправки вектора скорости
+    queue.enqueue(() => {ChangeVelocityCommand.Execute()})
+    //движение
+    queue.enqueue(() => {moveExecutor.Execute()})
+
+    queue.Execute()
+
+    expect(spaceShip.getLocation()).toEqual(new Vector(0,5));
+    expect(spaceShip.getDirection()).toEqual(90);
 });
-
-it('Движение с поворотом: после 4-х поворотов объект возвращается на исходную точку', () => {
-    let params = new Map();
-    const v: Vector = new Vector(5,5);
-    params.set("Location", v);
-    params.set("Direction", (90 * Math.PI) / 180); //поворачиваем на 90 градусов с постоянной скоростью
-    params.set("Velocity", v);
-
-    const obj = new AbstractMovableObject(new AbstractObject(params));
-    const rotateExecutor = new Rotate(obj);
-
-    rotateExecutor.Execute();
-    rotateExecutor.Execute();
-    rotateExecutor.Execute();
-    rotateExecutor.Execute();
-    expect(obj.getLocation()).toEqual(v);
-});
-
-it('Отсутствуют координаты', () => {
-    let params = new Map();
-    //params.set("Location", new Vector(12,5));
-    params.set("Velocity", new Vector(-7,3));
-    params.set("Direction", 0);
-
-    expect(() => new AbstractMovableObject(new AbstractObject(params))).toThrow('Field Location cant be read!');
-});
-
-it('Отсутствует скорость', () => {
-    let params = new Map();
-    params.set("Location", new Vector(12,5));
-    //params.set("Velocity", new Vector(-7,3));
-    params.set("Direction", 0);
-
-    expect(() => new AbstractMovableObject(new AbstractObject(params))).toThrow('Field Velocity cant be read!');
-});
-
-
