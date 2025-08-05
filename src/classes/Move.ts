@@ -1,4 +1,5 @@
 import {IMovable} from "../interfaces/IMovable";
+
 export class Move {
     private target: IMovable;
 

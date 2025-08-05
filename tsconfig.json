@@ -6,7 +6,6 @@
       "dom"
     ],
     "module": "commonjs"
-    // другие опции
   },
   "exclude": [
     "./node_modules"

@@ -3,5 +3,4 @@ export interface IMovable{
     getLocation(): Vector;
     setLocation(vector: Vector): void;
     getVelocity(): Vector;
-    setVelocity(velocity: Vector): void;
 }
