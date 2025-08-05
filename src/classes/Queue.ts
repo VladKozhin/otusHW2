@@ -1,31 +1,27 @@
 import {IQueue} from "../interfaces/IQueue";
 
-export class Queue implements IQueue{
-    private queue: any[] = [];
+type Command = () => any | Queue;
 
-    enqueue(command: any): void {
-        console.log("Func enqueued: " + command)
-        this.queue.push(command);
+export class Queue implements IQueue{
+    private commands: Command[] = [];
+
+    public enqueue(command: Command): void {
+        this.commands.push(command);
     }
 
-    Execute() {
-        const command = this.queue.shift();
-
-        if (command) {
-            if(command instanceof Queue){
-                command.Execute();
-            } else {
-                command();
+    public Execute():void {
+        for (const cmd of this.commands) {
+            if (cmd instanceof Queue) {
+                cmd.Execute();
+            } else if (typeof cmd === 'function') {
+                cmd();
             }
         }
     }
-
-    getCurrentFunc(){
-        console.log("Func: " + this.queue.pop())
-        return this.queue.pop()
+    public count():number{
+        return this.commands.length
     }
-
-    count():number{
-        return this.queue.length
+    getCurrentFunc():()=>void{
+        return this.commands.pop();
     }
 }

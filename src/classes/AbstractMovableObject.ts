@@ -51,6 +51,17 @@ export class AbstractMovableObject implements IMovable, IRotatable, IFuelable{
     }
 
     clarificateDirection(){
-        this.movementComponent.getLocation()
+        const initialVelocity = this.movementComponent.getVelocity();
+        const direction = this.rotationComponent.getDirection();
+        const angleRad = (direction * Math.PI) / 180;
+        return new Vector(
+            Math.round(initialVelocity.x * Math.cos(angleRad) - initialVelocity.y * Math.sin(angleRad)),
+            Math.round(initialVelocity.x * Math.sin(angleRad) + initialVelocity.y * Math.cos(angleRad))
+        )
+    }
+
+    setVelocity(velocity: Vector) {
+        this.movementComponent.setVelocity(velocity);
+        this.abstractObject.setField("Velocity", velocity);
     }
 }

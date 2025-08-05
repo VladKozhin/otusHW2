@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractMovableObject = void 0;
+var Vector_1 = require("./Vector");
 var MoveComponent_1 = require("../components/MoveComponent");
 var RotateComponent_1 = require("../components/RotateComponent");
 var AbstractMovableObject = /** @class */ (function () {
@@ -38,7 +39,14 @@ var AbstractMovableObject = /** @class */ (function () {
         this.abstractObject.setField("Direction", angle);
     };
     AbstractMovableObject.prototype.clarificateDirection = function () {
-        this.movementComponent.getLocation();
+        var initialVelocity = this.movementComponent.getVelocity();
+        var direction = this.rotationComponent.getDirection();
+        var angleRad = (direction * Math.PI) / 180;
+        return new Vector_1.Vector(Math.round(initialVelocity.x * Math.cos(angleRad) - initialVelocity.y * Math.sin(angleRad)), Math.round(initialVelocity.x * Math.sin(angleRad) + initialVelocity.y * Math.cos(angleRad)));
+    };
+    AbstractMovableObject.prototype.setVelocity = function (velocity) {
+        this.movementComponent.setVelocity(velocity);
+        this.abstractObject.setField("Velocity", velocity);
     };
     return AbstractMovableObject;
 }());

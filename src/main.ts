@@ -9,33 +9,24 @@ import {BurnFuelCommand} from "./classes/BurnFuelCommand";
 import {Queue} from "./classes/Queue";
 
 let params = new Map<string, any>();
-params.set("Location", new Vector(5,5));
-params.set("Direction", (90 * Math.PI) / 180);
-params.set("Velocity", new Vector(5,5));
+params.set("Location", new Vector(0,0));
+params.set("Direction", 0);
+params.set("Velocity", new Vector(5,0));
 params.set("FuelLevel", 100);
 
 let spaceShip = new AbstractMovableObject(new AbstractObject(params));
 
 const moveExecutor = new Move(spaceShip);
-const rotateExecutor = new Rotate(spaceShip);
-const fuelBurner = new BurnFuelCommand(spaceShip)
-const fuelGetter = new CheckFuelCommand(spaceShip)
+const rotateExecutor = new Rotate(spaceShip, 90);
 const queue = new Queue();
 
-const straightMoveWithBurningFuel = new Queue();
-//straightMoveWithBurningFuel.enqueue(fuelGetter.Execute);
-straightMoveWithBurningFuel.enqueue(fuelBurner.Execute);
-//straightMoveWithBurningFuel.enqueue(moveExecutor.Execute);
-console.log(fuelGetter.Execute())
-straightMoveWithBurningFuel.Execute()
-//queue.enqueue(straightMoveWithBurningFuel);
-//queue.enqueue(() =>{fuelBurner.Execute()})
-//queue.execute()
-console.log(fuelGetter.Execute())
-/*
-setInterval(() => {
-    //moveExecutor.Execute();
-    fuelBurner.Execute();
-    console.log(spaceShip.getFuelLevel())
-}, 1000);
-*/
+const ChangeVelocityCommand = new Queue();
+ChangeVelocityCommand.enqueue(() => spaceShip.setVelocity(spaceShip.clarificateDirection()))
+
+queue.enqueue(() => {rotateExecutor.Execute()})
+queue.enqueue(() => {ChangeVelocityCommand.Execute()})
+queue.enqueue(() => {moveExecutor.Execute()})
+
+queue.Execute()
+
+console.log(spaceShip.getLocation())

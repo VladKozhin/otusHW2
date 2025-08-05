@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Rotate = void 0;
 var Rotate = /** @class */ (function () {
-    function Rotate(target) {
+    function Rotate(target, angle) {
         this.target = target;
+        this.angle = angle;
     }
     Rotate.prototype.Execute = function () {
         /* const vx = this.target.getLocation().x
@@ -16,7 +17,7 @@ var Rotate = /** @class */ (function () {
          const newVy = Math.round(vx * sinTheta + vy * cosTheta);
  
          this.target.setLocation(new Vector(newVx, newVy))*/
-        return this.target.getDirection();
+        this.target.setDirection((this.target.getDirection() + this.angle) % 360);
     };
     return Rotate;
 }());
