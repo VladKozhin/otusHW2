@@ -1,9 +1,6 @@
-import {Vector} from "../classes/Vector";
-
 export interface IRotatable {
-    getLocation(): Vector;
-    setLocation(vector: Vector): void;
-
-    setDirection(angle: number);
-    getDirection(): number;
+    getDirection():number;
+    setDirection(newV:number):void;
+    getAngularVelocity():number;
+    getDirectionsNumber():number;
 }
